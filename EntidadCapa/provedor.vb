@@ -3,7 +3,7 @@
     Private telefono_provedor As String
     Private direccion_provedor As String
 
-    Public Property metodo_nombre As String
+    Public Property metodo_nombreProvedor As String
         Get
             Return nombre_Provedor
         End Get
@@ -12,21 +12,21 @@
         End Set
     End Property
 
-    Public Property metodo_nombreProducto As String
+    Public Property metodo_telefonoProvedor As String
         Get
-            Return nombre_producto
+            Return telefono_provedor
         End Get
         Set(value As String)
-            nombre_producto = value
+            telefono_provedor = value
         End Set
     End Property
 
-    Public Property metodo_descripcionProducto As String
+    Public Property metodo_direccionProvedor As String
         Get
-            Return descripcion_producto
+            Return direccion_provedor
         End Get
         Set(value As String)
-            descripcion_producto = value
+            direccion_provedor = value
         End Set
     End Property
 End Class

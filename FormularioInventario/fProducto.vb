@@ -8,27 +8,13 @@ Public Class fProducto
     Dim Da As New SqlDataAdapter
     Dim dt As New DataTable
 
-    Private Sub Label2_Click(sender As Object, e As EventArgs) Handles Label2.Click
 
-    End Sub
-
-    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles txtIdProducto.TextChanged
-
-    End Sub
-
-    Private Sub Label4_Click(sender As Object, e As EventArgs) Handles Label4.Click
-
-    End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Btn_nuevoProducto.Click
         If (txtIdProducto.Text <> "" And txtNombreProducto.Text <> "" And txtDescripcionProducto.Text <> "") Then
-            EP.metodo_id = txtIdProducto.Text
-            EP.metodo_nombreProducto = txtNombreProducto.Text
-            EP.metodo_descripcionProducto = txtDescripcionProducto.Text
+            obtenerDatosDeCajas()
             DP.Registrar_Producto(EP)
-            txtIdProducto.Text = ""
-            txtNombreProducto.Text = ""
-            txtDescripcionProducto.Text = ""
+            limpiarCajas()
             mostrarProductos()
         Else
             MsgBox("los campos no deben quedar vacios", MsgBoxStyle.Exclamation)
@@ -39,13 +25,9 @@ Public Class fProducto
 
     Private Sub Btn_Modificar_Click(sender As Object, e As EventArgs) Handles Btn_Modificar.Click
         If (txtIdProducto.Text <> "" And txtNombreProducto.Text <> "" And txtDescripcionProducto.Text <> "") Then
-            EP.metodo_id = txtIdProducto.Text
-            EP.metodo_nombreProducto = txtNombreProducto.Text
-            EP.metodo_descripcionProducto = txtDescripcionProducto.Text
+            obtenerDatosDeCajas()
             DP.Actualizar_Producto(EP)
-            txtIdProducto.Text = ""
-            txtNombreProducto.Text = ""
-            txtDescripcionProducto.Text = ""
+            limpiarCajas()
             mostrarProductos()
         Else
             MsgBox("Error los campos no pueden quedar vacios", MsgBoxStyle.Exclamation)
@@ -54,13 +36,9 @@ Public Class fProducto
     End Sub
 
     Private Sub Btn_Eliminar_Click(sender As Object, e As EventArgs) Handles Btn_Eliminar.Click
-        EP.metodo_id = txtIdProducto.Text
-        EP.metodo_nombreProducto = txtNombreProducto.Text
-        EP.metodo_descripcionProducto = txtDescripcionProducto.Text
+        obtenerDatosDeCajas()
         DP.Borrar_Producto(EP)
-        txtIdProducto.Text = ""
-        txtNombreProducto.Text = ""
-        txtDescripcionProducto.Text = ""
+        limpiarCajas()
         mostrarProductos()
     End Sub
 
@@ -75,18 +53,25 @@ Public Class fProducto
             dt = New DataTable
             Da.Fill(dt)
             tabla.DataSource = dt
+            conectar.desconectando()
         Catch ex As Exception
             MsgBox("error al cargar datos de tabla", MsgBoxStyle.Information)
         End Try
     End Sub
 
 
-
-    Private Sub TxtNombreProducto_TextChanged(sender As Object, e As EventArgs) Handles txtNombreProducto.TextChanged
-
+    Public Sub limpiarCajas()
+        txtIdProducto.Text = ""
+        txtNombreProducto.Text = ""
+        txtDescripcionProducto.Text = ""
     End Sub
 
-    Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
-
+    Public Sub obtenerDatosDeCajas()
+        EP.metodo_id = txtIdProducto.Text
+        EP.metodo_nombreProducto = txtNombreProducto.Text
+        EP.metodo_descripcionProducto = txtDescripcionProducto.Text
     End Sub
+
+
+
 End Class
