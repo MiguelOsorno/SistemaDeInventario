@@ -34,6 +34,7 @@ Public Class fProducto
         If (txtIdProducto.Text <> "" And txtNombreProducto.Text <> "" And txtDescripcionProducto.Text <> "") Then
             obtenerDatosDeCajas()
             DP.Actualizar_Producto(EP)
+            resetearTodo()
             limpiarCajas()
             mostrarProductos()
         Else
@@ -46,6 +47,7 @@ Public Class fProducto
         If (txtIdProducto.Text <> "") Then
             obtenerDatosDeCajas()
             DP.Borrar_Producto(EP)
+            resetearTodo()
             limpiarCajas()
             mostrarProductos()
         Else
@@ -90,6 +92,7 @@ Public Class fProducto
         txtIdProducto.Text = tabla.Item(0, i).Value()
         txtNombreProducto.Text = tabla.Item(1, i).Value()
         txtDescripcionProducto.Text = tabla.Item(2, i).Value()
+        seEscogioElementoDeTabla()
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
@@ -98,6 +101,25 @@ Public Class fProducto
     End Sub
 
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
+        limpiarCajas()
+    End Sub
+
+    Public Sub seEscogioElementoDeTabla()
+        Btn_Modificar.Enabled = True
+        Btn_Eliminar.Enabled = True
+        Btn_nuevoProducto.Enabled = False
+        txtIdProducto.Enabled = False
+    End Sub
+
+    Public Sub resetearTodo()
+        Btn_Modificar.Enabled = False
+        Btn_Eliminar.Enabled = False
+        Btn_nuevoProducto.Enabled = True
+        txtIdProducto.Enabled = True
+    End Sub
+
+    Private Sub BtnReset_Click(sender As Object, e As EventArgs) Handles BtnReset.Click
+        resetearTodo()
         limpiarCajas()
     End Sub
 End Class

@@ -26,7 +26,9 @@ Public Class fProvedor
     End Sub
 
     Public Sub obtenerDatosDeCajas()
-        EP.metodo_IdProvedor = TxtIdProvedor.Text
+        If TxtIdProvedor.Text <> "" Then
+            EP.metodo_IdProvedor = TxtIdProvedor.Text
+        End If
         EP.metodo_nombreProvedor = TxtNombre.Text
         EP.metodo_telefonoProvedor = TxtTelefono.Text
         EP.metodo_direccionProvedor = TxtDireccion.Text
@@ -49,8 +51,8 @@ Public Class fProvedor
         End Try
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        If (TxtNombre.Text <> "" And TxtTelefono.Text <> "" And TxtDireccion.Text <> "") Then
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles BtnEditar.Click
+        If (TxtNombre.Text <> "" And TxtTelefono.Text <> "" And TxtDireccion.Text <> "" And TxtIdProvedor.Text <> "") Then
             obtenerDatosDeCajas()
             DP.Actualizar_Provedor(EP)
             limpiarCajas()
@@ -60,7 +62,7 @@ Public Class fProvedor
         End If
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles BtnEliminar.Click
         If (TxtIdProvedor.Text <> "") Then
             obtenerDatosDeCajas()
             DP.Borrar_Provedor(EP)
@@ -79,6 +81,7 @@ Public Class fProvedor
         TxtNombre.Text = tabla.Item(1, i).Value()
         TxtTelefono.Text = tabla.Item(2, i).Value()
         TxtDireccion.Text = tabla.Item(3, i).Value()
+        activarBotones()
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
@@ -88,5 +91,10 @@ Public Class fProvedor
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         limpiarCajas()
+    End Sub
+
+    Public Sub activarBotones()
+        BtnEditar.Enabled = True
+        BtnEliminar.Enabled = True
     End Sub
 End Class
