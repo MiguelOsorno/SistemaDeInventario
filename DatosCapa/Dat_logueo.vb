@@ -5,7 +5,7 @@ Public Class Dat_logueo
     Dim sql As New SqlCommand
     Dim DA As New SqlDataAdapter
 
-    Public Function validar_usuario(ByVal CE As EntidadCapa.Ent_logueo)
+    Public Function validar_usuario(ByVal CE As EntidadCapa.Ent_logueo) As DataTable
         conectar.conectando()
         sql = New SqlCommand("logueo", conectar.cnx)
         sql.CommandType = CommandType.StoredProcedure

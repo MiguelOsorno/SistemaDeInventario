@@ -1,8 +1,17 @@
 ﻿Public Class provedor
+    Private id_provedor As Integer
     Private nombre_Provedor As String
     Private telefono_provedor As String
     Private direccion_provedor As String
 
+    Public Property metodo_IdProvedor As Integer
+        Get
+            Return id_provedor
+        End Get
+        Set(value As Integer)
+            id_provedor = value
+        End Set
+    End Property
     Public Property metodo_nombreProvedor As String
         Get
             Return nombre_Provedor
