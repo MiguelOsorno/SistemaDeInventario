@@ -7,7 +7,7 @@ Public Class fProvedor
     Dim conectar As New conexion
     Dim Da As New SqlDataAdapter
     Dim dt As New DataTable
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles BtnNuevo.Click
         If (TxtNombre.Text <> "" And TxtTelefono.Text <> "" And TxtDireccion.Text <> "") Then
             obtenerDatosDeCajas()
             DP.Registrar_Provedor(EP)
@@ -19,7 +19,6 @@ Public Class fProvedor
     End Sub
 
     Public Sub limpiarCajas()
-        TxtIdProvedor.Text = ""
         TxtNombre.Text = ""
         TxtTelefono.Text = ""
         TxtDireccion.Text = ""
@@ -57,6 +56,7 @@ Public Class fProvedor
             DP.Actualizar_Provedor(EP)
             limpiarCajas()
             mostrarProvedores()
+            resetear()
         Else
             MsgBox("los campos no deben quedar vacios", MsgBoxStyle.Exclamation)
         End If
@@ -68,6 +68,7 @@ Public Class fProvedor
             DP.Borrar_Provedor(EP)
             limpiarCajas()
             mostrarProvedores()
+            resetear()
         Else
             MsgBox("No ha seleccionado un provedor a eliminar", MsgBoxStyle.Exclamation)
         End If
@@ -81,7 +82,7 @@ Public Class fProvedor
         TxtNombre.Text = tabla.Item(1, i).Value()
         TxtTelefono.Text = tabla.Item(2, i).Value()
         TxtDireccion.Text = tabla.Item(3, i).Value()
-        activarBotones()
+        seEscogioElementoDeTabla()
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
@@ -93,8 +94,21 @@ Public Class fProvedor
         limpiarCajas()
     End Sub
 
-    Public Sub activarBotones()
+    Public Sub seEscogioElementoDeTabla()
         BtnEditar.Enabled = True
         BtnEliminar.Enabled = True
+        BtnNuevo.Enabled = False
+
+    End Sub
+
+    Public Sub resetear()
+        BtnNuevo.Enabled = True
+        BtnEditar.Enabled = False
+        BtnEliminar.Enabled = False
+        limpiarCajas()
+    End Sub
+
+    Private Sub BtnReset_Click(sender As Object, e As EventArgs) Handles BtnReset.Click
+        resetear()
     End Sub
 End Class
