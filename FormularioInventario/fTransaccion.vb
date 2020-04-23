@@ -123,7 +123,7 @@ Public Class fTransaccion
             txtCantidad.Text = dtTransacciones.Item(4, i).Value()
             cbTipo.Text = dtTransacciones.Item(5, i).Value()
             ponerIdsEnCajas()
-            modoEdicion()
+            modoEdicionEliminacion()
         Else
             limpiarCajas()
         End If
@@ -153,9 +153,10 @@ Public Class fTransaccion
         TxtIdProvedor.Text = dtExtra.Item(1, 0).Value()
     End Sub
 
-    Private Sub modoEdicion()
+    Private Sub modoEdicionEliminacion()
         btnAceptar.Enabled = False
         BtnEdit.Enabled = True
+        btnBorrar.Enabled = True
         txtIdTransaccion.Visible = True
         LbIdTransaccion.Visible = True
     End Sub
@@ -163,6 +164,7 @@ Public Class fTransaccion
     Private Sub reset()
         btnAceptar.Enabled = True
         BtnEdit.Enabled = False
+        btnBorrar.Enabled = False
         txtIdTransaccion.Visible = False
         LbIdTransaccion.Visible = False
         limpiarCajas()
@@ -187,5 +189,15 @@ Public Class fTransaccion
 
     Private Sub BtReset_Click(sender As Object, e As EventArgs) Handles btReset.Click
         reset()
+    End Sub
+
+    Private Sub BtnBorrar_Click(sender As Object, e As EventArgs) Handles btnBorrar.Click
+        If txtIdTransaccion.Text <> "" Then
+            ET.metodo_idTransaccion = txtIdTransaccion.Text
+            datosTransaccion.Eliminar_transaccion(ET)
+            limpiarCajas()
+            mostrarTodasLasTransacciones()
+            reset()
+        End If
     End Sub
 End Class

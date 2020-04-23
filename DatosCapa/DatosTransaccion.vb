@@ -46,4 +46,20 @@ Public Class DatosTransaccion
         End Try
     End Sub
 
+    Public Sub Eliminar_transaccion(ByVal ET As EntidadCapa.transaccion)
+        Try
+            conectar.conectando()
+            sql = New SqlCommand("ELIMINAR_TRANSACCION", conectar.cnx)
+            sql.CommandType = CommandType.StoredProcedure
+            With sql.Parameters
+                .AddWithValue("@ID", ET.metodo_idTransaccion)
+            End With
+            sql.ExecuteNonQuery()
+            MsgBox("Se elimino el registro con exito", MsgBoxStyle.Information)
+            conectar.desconectando()
+        Catch ex As Exception
+            MsgBox("" + ex.ToString, MsgBoxStyle.Exclamation)
+        End Try
+    End Sub
+
 End Class
