@@ -4,6 +4,7 @@
     Private idProvedor_transaccion As Integer
     Private cantidad_transaccion As Integer
     Private tipoTransaccion As String
+    Private idTransaccion As Integer
 
     Public Property metodo_fechaTransaccion As Date
         Get
@@ -47,6 +48,15 @@
         End Get
         Set(value As String)
             tipoTransaccion = value
+        End Set
+    End Property
+
+    Public Property metodo_idTransaccion As Integer
+        Get
+            Return idTransaccion
+        End Get
+        Set(value As Integer)
+            idTransaccion = value
         End Set
     End Property
 End Class
