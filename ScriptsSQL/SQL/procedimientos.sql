@@ -185,6 +185,50 @@ SET @idProducto = (SELECT idProducto FROM INSERTED)
     UPDATE almacen SET cantidad = (cantidad+@cantidad) where idProducto = @idProducto
     END
   ELSE
-  print 'no entro'
+    IF(@tipo = 'Salida')
+    BEGIN
+    UPDATE almacen SET cantidad = (cantidad - @cantidad) WHERE idProducto = @idProducto
+    END
 END
 GO    
+
+
+CREATE TRIGGER modificarAlmacenActualizacion
+ON transaccion
+AFTER UPDATE
+AS 
+BEGIN
+DECLARE 
+@cantidadAnterior AS INT,
+@tipoAnterior AS VARCHAR(10),
+@idProductoAnterior AS INT,
+@cantidadNueva AS INT,
+@tipoNuevo AS VARCHAR(10),
+@idProductoNuevo AS INT
+SET @cantidadAnterior = (SELECT cantidad FROM DELETED)
+SET @tipoAnterior = (SELECT tipo FROM DELETED)
+SET @idProductoAnterior = (SELECT idProducto FROM DELETED)
+SET @cantidadNueva = (SELECT cantidad FROM INSERTED)
+SET @tipoNuevo = (SELECT tipo FROM INSERTED)
+SET @idProductoNuevo = (SELECT idProducto FROM INSERTED)
+  IF(@tipoAnterior = 'Entrada')
+    BEGIN
+    UPDATE almacen SET cantidad = (cantidad - @cantidadAnterior) WHERE idProducto = @idProductoAnterior
+    END
+  ELSE
+    IF(@tipoAnterior = 'Salida')
+      BEGIN
+      UPDATE almacen SET cantidad = (cantidad + @cantidadAnterior) WHERE idProducto = @idProductoAnterior
+      END 
+ 
+  IF(@tipoNuevo = 'Entrada')
+    BEGIN
+    UPDATE almacen SET cantidad = (cantidad + @cantidadNueva) WHERE idProducto = @idProductoNuevo
+    END 
+  ELSE
+    IF(@tipoNuevo = 'Salida')
+    BEGIN
+    UPDATE almacen SET cantidad = (cantidad - @cantidadNueva) WHERE idProducto = @idProductoNuevo
+    END
+END
+GO
