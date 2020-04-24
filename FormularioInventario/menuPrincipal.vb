@@ -17,4 +17,9 @@
         fTransaccion.Show()
         Me.Hide()
     End Sub
+
+    Private Sub BtnAlmacen_Click(sender As Object, e As EventArgs) Handles btnAlmacen.Click
+        fAlmacen.Show()
+        Me.Hide()
+    End Sub
 End Class
