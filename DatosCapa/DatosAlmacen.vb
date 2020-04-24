@@ -35,4 +35,20 @@ Public Class DatosAlmacen
             MsgBox("Error al registrar el producto en el almacen" + ex.ToString, MsgBoxStyle.Exclamation)
         End Try
     End Sub
+
+    Public Sub eliminarProductoDeAlmacen(ByVal EA As EntidadCapa.almacen)
+        Try
+            conectar.conectando()
+            sql = New SqlCommand("ELIMINAR_ALMACEN", conectar.cnx)
+            sql.CommandType = CommandType.StoredProcedure
+            With sql.Parameters
+                .AddWithValue("@ID", EA.metodo_id)
+            End With
+            sql.ExecuteNonQuery()
+            MsgBox("Se elimino el producto del almacen correctamente", MsgBoxStyle.Information)
+            conectar.desconectando()
+        Catch ex As Exception
+            MsgBox("Error al intentar borrar el producto del almacen", MsgBoxStyle.Exclamation)
+        End Try
+    End Sub
 End Class

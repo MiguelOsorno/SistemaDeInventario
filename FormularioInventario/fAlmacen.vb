@@ -14,7 +14,7 @@ Public Class fAlmacen
     Private Sub mostrarProductos()
         Try
             conectar.conectando()
-            Da = New SqlDataAdapter("select almacen.id, producto.identificador as IdProducto, producto.nombre as producto, producto.descripcion as descripcion, almacen.cantidad as cantidad from (almacen INNER JOIN producto ON almacen.idProducto = producto.id)", conectar.cnx)
+            Da = New SqlDataAdapter("select almacen.id as IdAlmacen, producto.identificador as IdProducto, producto.nombre as producto, producto.descripcion as descripcion, almacen.cantidad as cantidad from (almacen INNER JOIN producto ON almacen.idProducto = producto.id)", conectar.cnx)
             dt = New DataTable
             Da.Fill(dt)
             tablaAlmacen.DataSource = dt
@@ -56,6 +56,8 @@ Public Class fAlmacen
 
     Private Sub TablaAlmacen_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles tablaAlmacen.CellContentClick
         Dim i As Integer
+        txtId.Visible = True
+        lbIds.Visible = True
         i = tablaAlmacen.CurrentRow.Index
         txtId.Text = tablaAlmacen.Item(0, i).Value()
         txtIdentificador.Text = tablaAlmacen.Item(1, i).Value()
@@ -74,6 +76,7 @@ Public Class fAlmacen
                 datosAlmacen.registrarEnAlmacen(EA)
                 limpiarCajas()
                 mostrarProductos()
+                reset()
             End If
         Else
             MsgBox("Eliga un producto a agregar", MsgBoxStyle.Information)
@@ -89,5 +92,35 @@ Public Class fAlmacen
         txtId.Text = ""
         txtIdentificador.Text = ""
         txtProducto.Text = ""
+    End Sub
+
+    Private Sub reset()
+        limpiarCajas()
+        txtId.Visible = False
+        lbIds.Visible = False
+        btnAgregar.Enabled = False
+        btnEliminar.Enabled = False
+    End Sub
+
+    Private Sub BtnEliminar_Click(sender As Object, e As EventArgs) Handles btnEliminar.Click
+        If txtId.Text <> "" And txtIdentificador.Text <> "" And txtProducto.Text <> "" Then
+            obtenerDatosDeCajas()
+            datosAlmacen.eliminarProductoDeAlmacen(EA)
+            limpiarCajas()
+            mostrarProductos()
+            reset()
+        Else
+            MsgBox("Seleccione un producto del almacen", MsgBoxStyle.Information)
+        End If
+
+    End Sub
+
+    Private Sub BtnReset_Click(sender As Object, e As EventArgs) Handles btnReset.Click
+        reset()
+    End Sub
+
+    Private Sub BtnSalir_Click(sender As Object, e As EventArgs) Handles btnSalir.Click
+        menuPrincipal.Show()
+        Me.Hide()
     End Sub
 End Class
