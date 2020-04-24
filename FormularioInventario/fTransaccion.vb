@@ -62,11 +62,17 @@ Public Class fTransaccion
     End Sub
 
     Private Sub BtnAceptar_Click(sender As Object, e As EventArgs) Handles btnAceptar.Click
+        Dim dtable As New DataTable
         If TxtNombreProducto.Text <> "" And TxtNombreProvedor.Text <> "" And txtCantidad.Text <> "" And valorCombo <> "" Then
             obtenerDatosDeCajas()
-            datosTransaccion.Registrar_transaccion(ET)
-            limpiarCajas()
-            mostrarTodasLasTransacciones()
+            dtable = datosTransaccion.consultarProducto(ET)
+            If dtable.Rows.Count > 0 Then
+                datosTransaccion.Registrar_transaccion(ET)
+                limpiarCajas()
+                mostrarTodasLasTransacciones()
+            Else
+                MsgBox("No existe el producto en el almacen", MsgBoxStyle.Information)
+            End If
         Else
             MsgBox("los campos no pueden quedar vacios", MsgBoxStyle.Exclamation)
         End If
@@ -160,6 +166,7 @@ Public Class fTransaccion
         btnBorrar.Enabled = True
         txtIdTransaccion.Visible = True
         LbIdTransaccion.Visible = True
+        cbTipo.Enabled = False
     End Sub
 
     Private Sub reset()
@@ -168,6 +175,7 @@ Public Class fTransaccion
         btnBorrar.Enabled = False
         txtIdTransaccion.Visible = False
         LbIdTransaccion.Visible = False
+        cbTipo.Enabled = True
         limpiarCajas()
     End Sub
 

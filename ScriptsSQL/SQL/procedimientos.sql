@@ -89,7 +89,14 @@ CREATE PROCEDURE MODIFICAR_TRANSACCION
 @Tipo AS VARCHAR(10)
 AS 
 BEGIN
-UPDATE transaccion SET fecha=@Fecha, idProducto=@IdProducto,idProvedor=@IdProvedor, cantidad=@Cantidad, tipo=@Tipo WHERE id=@ID
+  IF(@Cantidad > (SELECT cantidad FROM almacen WHERE idProducto= @IdProducto) AND @Tipo = 'Salida')
+  BEGIN
+  PRINT 'no se pudo'
+  END
+ELSE IF(@cantidad >=0)
+  BEGIN
+  UPDATE transaccion SET fecha=@Fecha, idProducto=@IdProducto,idProvedor=@IdProvedor, cantidad=@Cantidad, tipo=@Tipo WHERE id=@ID
+  END
 END 
 GO
 EXEC MODIFICAR_TRANSACCION @Fecha='2019-12-12 01:00:40', @IdProducto=20,@IdProvedor=1, @Cantidad=400,@Tipo='Salida', @ID=4;
@@ -148,6 +155,16 @@ BEGIN
 select (nombre,descripcion)
 from producto
 where identificador=@Identificador
+END
+GO
+
+CREATE PROCEDURE CONSULTA_PRODUCTODOS
+@Id AS INT
+AS 
+BEGIN 
+select *
+from almacen
+where idProducto = @Id
 END
 GO
 
