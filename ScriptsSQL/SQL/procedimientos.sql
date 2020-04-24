@@ -31,9 +31,18 @@ CREATE PROCEDURE INSERTAR_TRANSACCION
 @Tipo AS VARCHAR(10)
 AS 
 BEGIN
-INSERT transaccion(fecha,idProducto,idProvedor,cantidad,tipo)
-VALUES(@Fecha,@IdProducto,@idProvedor,@Cantidad,@Tipo)
-END 
+IF(@Tipo = 'Salida' and (select cantidad from almacen WHERE idProducto= @IdProducto)>= @Cantidad)
+    BEGIN
+    INSERT transaccion(fecha,idProducto,idProvedor,cantidad,tipo)
+    VALUES(@Fecha,@IdProducto,@idProvedor,@Cantidad,@Tipo)
+	END
+ELSE
+    IF(@Tipo = 'Entrada')
+    BEGIN
+    INSERT transaccion(fecha,idProducto,idProvedor,cantidad,tipo)
+    VALUES(@Fecha,@IdProducto,@idProvedor,@Cantidad,@Tipo)
+	END
+END
 GO
 EXEC INSERTAR_TRANSACCION @Fecha='1900-01-01 00:00:00',@IdProducto=20,@IdProvedor=1, @Cantidad=200,@Tipo='Entrada';
 
@@ -153,3 +162,29 @@ select * from usuarios
 where usuario= @usuario and contrasena = @contrasena
 END
 GO
+
+//////////////////////////////////////// disparadores
+
+
+CREATE TRIGGER modificarAlmacen
+ON transaccion
+AFTER INSERT
+AS 
+BEGIN
+DECLARE 
+@cantidad AS INT,
+@tipo AS VARCHAR(10),
+@idProducto AS INT 
+SET @cantidad = (SELECT cantidad FROM INSERTED)
+print @cantidad
+SET @tipo = (SELECT tipo FROM INSERTED)
+print @tipo
+SET @idProducto = (SELECT idProducto FROM INSERTED)
+  IF(@tipo = 'Entrada')
+    BEGIN
+    UPDATE almacen SET cantidad = (cantidad+@cantidad) where idProducto = @idProducto
+    END
+  ELSE
+  print 'no entro'
+END
+GO    

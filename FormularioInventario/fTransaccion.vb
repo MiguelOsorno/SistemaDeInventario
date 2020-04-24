@@ -66,6 +66,7 @@ Public Class fTransaccion
             obtenerDatosDeCajas()
             datosTransaccion.Registrar_transaccion(ET)
             limpiarCajas()
+            mostrarTodasLasTransacciones()
         Else
             MsgBox("los campos no pueden quedar vacios", MsgBoxStyle.Exclamation)
         End If
